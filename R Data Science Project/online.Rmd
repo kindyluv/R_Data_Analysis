@@ -1,0 +1,22 @@
+---
+title: "titanic"
+author: "lois"
+date: "11/26/2021"
+output: pdf_document
+---
+
+
+#load raw data
+train <- read.csv("train.csv", header = TRUE)
+test <- read.csv("test.csv", header = TRUE)
+
+#Add a 'Survival' variable to the test set to allow for combining data sets
+test.survived <- data.from(survived = rep("None", nrow(test)), test[.])
+
+#combine data sets
+data.combined <- rbind(train, test.survived)
+
+# A bit about a data types (e.g, factors)
+str(data.combined)
+
+data.comb
