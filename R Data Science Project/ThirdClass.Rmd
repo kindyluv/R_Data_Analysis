@@ -49,3 +49,134 @@ comments
 ```{r}
 write.csv(comments, "/home/precious/Desktop/R-Data-Science-Project/dataComment.csv")
 ```
+
+```{r}
+fertility <- read.csv("/home/precious/Desktop/R-Data-Science-Project/Fertility (1).csv", sep=",", header=TRUE,
+                 col.names=c(1, 2, 3, 4, 5, 6, 7, 8, 9)
+                 )
+fertility
+```
+
+
+```{r}
+auto <- read.table("https://s3.amazonaws.com/assets.datacamp.com/blog_assets/test.txt", header=FALSE)
+head(auto[1:2,2:3])
+```
+
+
+```{r}
+message("Missing values in file: ", sum(is.na(fertility)))
+message("Missing values in auto: ", sum(is.na(auto)))
+```
+
+
+```{r}
+who_suicide <- read.csv("/home/precious/Desktop/R-Data-Science-Project/who_suicide_statistics_semi.csv", header=TRUE,
+                        sep=",", strip.white=TRUE
+                      )
+who_suicide
+```
+
+
+```{r}
+host <- "courses.csrrinzqubik.us-east-1.rds.amazonaws.com"
+connect <- dbConnect(RMySQL::MySQL(), dbname="tweater",
+                     host=host, port=3306, user="student", password="datacamp"
+                     )
+tables <- dbListTables(connect)
+tables
+```
+
+```{r}
+users <- dbReadTable(connect, "users")
+users
+```
+
+```{r}
+comments <- dbReadTable(connect, "comments")
+comments
+```
+
+```{r}
+write.csv(comments, "/home/precious/Desktop/R-Data-Science-Project/comments.csv")
+```
+
+```{r}
+host <- "car-simulation-station.c9az8e0qjbgo.us-east-1.rds.amazonaws.com"
+connect <- dbConnect(RMySQL::MySQL(), dbname="car_simulation_station",
+                     host=host, port=3306, user="datacamp_user",
+                     password="learn tabular data for fun and profit"
+                     )
+tables2 <- dbListTables(connect)
+tables2
+```
+
+
+```{r}
+lifetime <- dbReadTable(connect, "lifetime_scq_cleaned")
+write.csv(lifetime, "/home/precious/Desktop/R-Data-Science-Project/lifetime.csv")
+lifetime
+```
+
+```{r}
+father <- dbReadTable(connect, "bapq_father_self_report_cleaned")
+write.csv(father, "/home/precious/Desktop/R-Data-Science-Project/father.csv")
+father
+```
+
+
+```{r}
+bcancer <- read.csv("https://raw.githubusercontent.com/mGalarnyk/Python_Tutorials/master/Kaggle/BreastCancerWisconsin/data/data.csv", header=T)
+str(bcancer)
+```
+
+
+```{r}
+house <- read.csv("/home/precious/Desktop/R-Data-Science-Project/house.csv")
+house
+```
+
+```{r}
+boxplot(Price~Status, data = house, main = "price")
+```
+
+```{r}
+plot(house$SQFT, house$Price, xlab="SQFT", ylab="Price", main="ScatterPlot of Price and SQFT")
+```
+```{r}
+cancer <- read.csv("/home/precious/Desktop/R-Data-Science-Project/cancer.csv")
+cancer
+```
+```{r}
+sum(is.na(cancer))
+```
+```{r}
+child_data <- read_sav("/home/precious/Desktop/R-Data-Science-Project/child_data.sav")
+child_data
+hist(child_data$AGE, xlab = "AGE", main = "Histogram of Child_data")
+child_data
+plot(child_data$AGE, child_data$MEM_SPAN, xlab = "AGE", ylab = "MEM_SPAN", main = "ScatterPlot of Age and Mem_Span")
+child_data
+plot(child_data$AGE, child_data$IQ, xlab = "AGE", ylab = "IQ", main = "ScatterPlot of Age and IQ")
+child_data
+```
+```{r}
+boxplot(child_data$AGE, child_data$MEM_SPAN, data= child_data, main="Boxplot of Age based on Mem_Span")
+
+```
+```{r}
+boxplot(child_data$AGE, child_data$IQ, data= child_data, main="Boxplot of Age based on IQ")
+
+```
+```{r}
+sum(is.na(child_data))
+```
+```{r}
+child_data <- read_sav("/home/precious/Desktop/R-Data-Science-Project/child_data.sav")
+child_data
+```
+
+```{r}
+child <- format(round(child_data$AGE, 0), nsmall = 0)
+child
+```
