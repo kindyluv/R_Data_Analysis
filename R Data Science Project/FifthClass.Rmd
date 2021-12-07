@@ -1,0 +1,69 @@
+---
+title: "FifthClass"
+author: "lois"
+date: "12/7/2021"
+output: pdf_document
+---
+
+```{r}
+dt<-read.csv("/home/precious/Desktop/R-Data-Science-Project/house.csv", header = T)
+t.test(dt$Price,mu=3000)
+```
+```{r}
+cancer <- read.csv("/home/precious/Desktop/R-Data-Science-Project/cancer.csv")
+t.test(cancer$area_se~cancer$diagnosis, alternative="two.sided")
+```
+```{r}
+x<-c(239, 170, 182, 143, 141, 170, 160, 154, 185, 130)
+y<-c(362, 343, 330, 340, 314, 567, 292, 439, 312, 292)
+paried_1<-t.test(x,y, Paried=TRUE)
+paried_1
+```
+```{r}
+data <- read.csv("/home/precious/Desktop/R-Data-Science-Project/master.csv")
+dim(data)
+head(data, 10)
+ct<-table(data$age, data$suicides.100k.pop)
+chisq.test(ct)
+```
+```{r}
+ct <- table(data$age, data$suicides.100k.pop)
+chisq.test(ct)
+```
+
+```{r}
+cancer_anova <- read.csv("/home/precious/Desktop/R-Data-Science-Project/gapC.csv")
+means <- round(tapply(cancer_anova$breastcancer, cancer_anova$continent, mean), digits = 2)
+```
+
+```{r}
+#install gplots
+plotmeans(cancer_anova$breastcancer~cancer_anova$continent, digits = 2, ccol = "red", mean.labels = T, main = "plot of breast cancer means by continent")
+```
+
+```{r}
+boxplot(cancer_anova$breastcancer~cancer_anova$continent, main = "Breast cancer by continent (mean is black dot)", xlab = "continent", ylab = "new cases per 100k residents", col = rainbow(7))
+points(means, col = "black", pch = 18)
+```
+
+```{r}
+aov_cont <- aov(cancer_anova$breastcancer~cancer_anova$continent)
+summary(aov_cont)
+```
+
+```{r}
+tuk <- TukeyHSD(aov_cont)
+plot(tuk)
+```
+
+```{r}
+size <- c(3, 4, 5, 6, 4, 5, 6, 7, 7, 8, 9, 10)
+pop <- c("A", "A", "A", "A", "B", "B", "B", "B", "C", "C", "C", "C")
+library(ggplot2)
+boxplot(size~pop)
+```
+
+```{r}
+means <- round(tapply(size, pop, mean), digits = 2)
+means
+```
