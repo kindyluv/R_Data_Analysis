@@ -1,0 +1,38 @@
+---
+title: "LinearRegression"
+author: "lois"
+date: "12/8/2021"
+output: pdf_document
+---
+
+```{r}
+iris <- read.csv("/home/precious/Desktop/R-Data-Science-Project/iris.csv")
+View(iris)
+```
+```{r}
+sum(is.na(iris))
+```
+```{r}
+ml<-lm(iris$Sepal.Length~iris$Petal.Length, data=iris)
+summary(ml)
+```
+
+```{r}
+boxplot(iris$Sepal.Length~iris$Species, data = iris)
+
+```
+```{r}
+lm(formula = iris$Sepal.Length~iris$Petal.Length, data=iris)
+```
+```{r}
+hs<-read.csv("/home/precious/Desktop/R-Data-Science-Project/house.csv")
+View(hs)
+```
+```{r}
+hss<- plot(hs$Price~hs$Bathrooms + hs$Location + hs$MLS.+ hs$Bedrooms+ hs$SQFT+ hs$Price.SQFT + hs$Status, main = "Scattered plot between price and other variable")
+```
+```{r}
+attach(hs)
+m2<-lm(Price~Bedrooms+Bathrooms+SQFT+Status)
+summary(m2)
+```
