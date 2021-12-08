@@ -1,0 +1,34 @@
+---
+title: "fourth_class"
+author: "lois"
+date: "12/1/2021"
+output: pdf_document
+---
+
+```{r}
+library(readxl)
+library(tidyverse)
+```
+```{r}
+mbta1 <- read_excel("/home/precious/Desktop/R-Data-Science-Project/mbta.xlsx", sheet=1, skip=1)
+mbta1
+```
+```{r}
+mbta <- read_excel("/home/precious/Desktop/R-Data-Science-Project/mbta.xlsx", sheet=1, skip=1, range = cell_cols(2:60))
+mbta <- mbta %>% gather(`2007-01`:`2011-10`, key = "year", value = "passenger")
+mbta <- mbta %>% separate(year, into=c("year", "month"))
+mbta
+```
+
+```{r}
+mbta <- mbta %>% pivot_wider(names_from = mode, values_from = passenger)
+mbta
+```
+```{r}
+mbta <- mbta %>%.[,c(1:2, 6:8)]
+mbta
+```
+```{r}
+mbta <- mbta%>% gather(`Commuter Rail`:`Light Rail`, key="rail_type", value = passenger)
+mbta
+```
