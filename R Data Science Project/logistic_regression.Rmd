@@ -1,0 +1,38 @@
+---
+title: "hierarchical_clustering"
+author: "lois"
+date: "1/10/2022"
+output: pdf_document
+---
+
+```{r}
+library(dplyr)
+```
+
+```{r}
+head(mtcars)
+```
+
+```{r}
+distance_mat <- dist(mtcars, method = 'euclidean')
+distance_mat
+```
+
+```{r}
+Hierar_cl <- hclust(distance_mat, method = "average")
+Hierar_cl
+```
+
+```{r}
+abline(h = 110, col = "green")
+```
+
+```{r}
+ﬁt <- cutree(Hierar_cl, k = 3 )
+ﬁt
+```
+
+```{r}
+table(ﬁt)
+rect.hclust(Hierar_cl, k = 3, border = "green")
+```
