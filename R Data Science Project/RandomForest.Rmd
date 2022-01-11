@@ -23,5 +23,9 @@ test <- subset(auto_mobile, dt==F)
 str(test)
 ```
 ```{r}
+table(train[,c('price','make')])
+```
 
+```{r}
+bplot.xy(train$Survived, train$Age)
 ```
