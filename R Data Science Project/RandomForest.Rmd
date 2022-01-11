@@ -1,0 +1,27 @@
+---
+title: "RandomForest"
+author: "lois"
+date: "1/11/2022"
+output: pdf_document
+---
+
+```{r}
+library(caTools)
+library(randomForest)
+library(caret)
+```
+
+```{r}
+auto_mobile <- read.csv("/home/precious/Desktop/R-Data-Science-Project/Automobile_data.csv", sep = ",",header = T)
+auto_mobile
+```
+
+```{r}
+dt <- sample.split(auto_mobile, SplitRatio = 0.75)
+train <- subset(auto_mobile, dt==T)
+test <- subset(auto_mobile, dt==F)
+str(test)
+```
+```{r}
+
+```
