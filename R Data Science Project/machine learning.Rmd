@@ -1,0 +1,67 @@
+---
+title: "Machine Learning Algorithm And Random Forest"
+author: "lois"
+date: "1/11/2022"
+output: pdf_document
+---
+
+```{r}
+library(caTools)
+library(randomForest)
+library(caret)
+```
+```{r}
+auto_mobile <- read.csv("/home/precious/Desktop/R-Data-Science-Project/Automobile_data.csv", sep = ",",header = T)
+View(auto_mobile)
+```
+
+
+```{r}
+dt <- sample.split(auto_mobile, SplitRatio = 0.75)
+train <- subset(auto_mobile, dt==T)
+test <- subset(auto_mobile, dt==F)
+str(test)
+str(train)
+```
+
+```{r}
+plot(train$price, train$num.of.doors)
+```
+
+```{r}
+table(train[, c('price', 'make')])
+```
+
+```{r}
+boxplot(train$Survived, train$Age)
+```
+
+```{r}
+train_ <- factor(train$price)
+train_
+```
+
+```{r}
+set.seed(50)
+```
+
+
+```{r}
+model <- train(fuel.type~symboling + compression.ratio + wheel.base + length + width + height + curb.weight + city.mpg + engine.size + highway.mpg + make, data = train, method = 'rf', trControl=trainControl(method='cv', number=7))
+model
+```
+```{r}
+summary(test)
+```
+```{r}
+test$num.of.doors <- ifelse(is.na(test$num.of.doors), mean(test$num.of.doors, na.rm = TRUE), test$num.of.doors)
+```
+```{r}
+test$auto_mobile <- predict(model, newdata = test)
+test$auto_mobile
+```
+```{r}
+help(randomForest)
+```
+
+
