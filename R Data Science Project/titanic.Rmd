@@ -1,0 +1,44 @@
+---
+title: "Titanic_Train"
+author: "lois"
+date: "1/12/2022"
+output: pdf_document
+---
+
+```{r}
+titat <- read.csv("/home/precious/Desktop/R-Data-Science-Project/train.csv")
+titat
+```
+```{r}
+dt <- sample.split(titat, SplitRatio = 0.75)
+train <- subset(titat, dt==T)
+test <- subset(titat, dt==F)
+str(test)
+```
+```{r}
+table(titat[, c('Survived', 'Pclass')])
+```
+```{r}
+boxplot(titat$Survived, titat$Age)
+```
+```{r}
+titat$Survived <- factor(titat$Survived)
+```
+```{r}
+set.seed(51)
+```
+```{r}
+model <- train(Survived ~ Pclass + Sex + SibSp + Embarked + Parch + Fare, data = train, method = 'rf',
+trControl = trainControl(method = 'cv', number = 5))
+model
+```
+```{r}
+summary(test)
+```
+```{r}
+test$Fare <- ifelse(is.na(test$Fare), mean(test$Fare, na.rm = TRUE), test$Fare)
+```
+```{r}
+test$Survived <- predict(model, newdata = test)
+test$Survived
+```
