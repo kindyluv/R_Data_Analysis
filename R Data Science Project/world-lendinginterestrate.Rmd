@@ -1,0 +1,96 @@
+---
+title: "Crude_oil"
+author: "lois"
+date: "1/19/2022"
+output: pdf_document
+---
+```{r}
+library(dplyr)
+library(fpp2)
+library(readr)
+library(readxl)
+library("forecast")
+library("fUnitRoots")
+library(lmtest)
+library(FitAR)
+library(urca)
+```
+
+```{r}
+interest_rate <- read.csv("/home/precious/Desktop/R-Data-Science-Project/world-lendinginterestrate.xlsx - Data.csv")
+View(interest_rate)
+```
+
+```{r}
+tsInterest <- ts(interest_rate[2:51,2],start=1976,frequency = 12)
+plot(tsInterest)
+```
+```{r}
+sum(is.na(tsInterest))
+```
+```{r}
+summary(ur.df(y = tsInterest, type = "none", lags = 1))
+```
+
+```{r}
+timeseriescomponents <- decompose(tsInterest)
+plot(timeseriescomponents)
+```
+```{r}
+my_urkpssTest <- function(x, type, lags, use.lag, doplot){
+  x <- as.vector(x)
+  urca <- urca::ur.kpss(x, type = type[1], lags[1], use.lag = use.lag)
+  output = capture.output(urca::summary(urca))[-1:4]
+  output = output[-length(output)]
+  for (i in i:length(output)) output[i] = paste(" ", output[i])
+  ans = list(name = "ur.kpss", test = urca, output = output)
+  if (doplot)
+    plot(urca)
+  new("fHTEST", call = match.call(), data = list(x = x),
+      test = ans, title = "KPSS UNIT Root Test", description())
+}
+urkpssTest(tsInterest, type = c("tau"), lags = c("short"),use.lag = NULL, doplot = TRUE)
+```
+```{r}
+urkpssTest(tsInterest, type = c("tau"), lags = c("short"),use.lag = NULL, doplot = TRUE)
+tsstationary <- diff(tsInterest, diﬀerences=1)
+plot(tsstationary)
+```
+```{r}
+acf(tsInterest,lag.max=34)
+```
+```{r}
+timeseriesseasonallyadjusted <- tsInterest - timeseriescomponents$seasonal
+plot(tsstationary)
+par(mfrow=c(2,1))
+```
+```{r}
+acf(tsstationary, lag.max=34)
+pacf(tsstationary, lag.max=34)
+```
+```{r}
+set.seed(51)
+fitARIMA <- arima(tsInterest, order = c(1,1,1), seasonal = list(order = c(1,0,1),period = 12), method = "ML")
+fitARIMA
+```
+```{r}
+coeftest(fitARIMA)
+par(mfrow=c(1,1))
+acf(fitARIMA$residuals)
+```
+```{r}
+boxresult<-LjungBoxTest (fitARIMA$residuals,k=2,StartLag=1) 
+par(mfrow=c(2,1))
+plot(boxresult[,3],main="Ljung-Box Q Test", ylab="P-values", xlab="Lag")
+```
+```{r}
+qqnorm(fitARIMA$residuals)
+qqline(fitARIMA$residuals)
+auto.arima(tsInterest, trace=TRUE)
+```
+```{r}
+par(mfrow=c(1,1))
+predict(fitARIMA,n.ahead = 5)
+futurVal <- forecast.Arima(fitARIMA,h=10, level=c(99.5))
+plot.forecast(futurVal)
+```
